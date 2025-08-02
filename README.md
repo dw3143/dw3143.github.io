@@ -7,6 +7,7 @@
 ### 出版书籍
 
 > * [TOEFL 核心词汇 21 天突破](https://search.jd.com/Search?keyword=TOEFL%20%E6%A0%B8%E5%BF%83%E8%AF%8D%E6%B1%87%2021%20%E5%A4%A9%E7%AA%81%E7%A0%B4)
+> * 洛克菲勒写给儿子的38封信（[中文版](/rockefeller-38letters/cn/) · [English Edition](/rockefeller-38letters/en/)）
 > * [TOEFL 高分作文](/twe185/)
 > * [新托福 iBT 词汇分类突破](https://search.jd.com/Search?keyword=%E6%96%B0%E6%89%98%E7%A6%8F%20iBT%20%E8%AF%8D%E6%B1%87%E5%88%86%E7%B1%BB%E7%AA%81%E7%A0%B4)（[配套音频文件下载](https://pan.baidu.com/s/1T5Te0b95l2DWViH_qGprzQ?pwd=wbmk)）
 > * [把时间当作朋友](/befriending-time/)
