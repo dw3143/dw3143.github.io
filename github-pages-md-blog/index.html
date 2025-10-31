@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>我的极简网站</title>
+  <meta name="description" content="一个用 GitHub Pages 搭建的极简网站（支持直接读取 Markdown 文章）" />
+  <meta name="theme-color" content="#0ea5e9" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #0f172a; /* slate-900 */
+      --muted: #64748b; /* slate-500 */
+      --accent: #0ea5e9; /* sky-500 */
+      --border: #e2e8f0; /* slate-200 */
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#0b1220; --fg:#e5e7eb; --muted:#94a3b8; --border:#1f2937; }
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font: 16px/1.6 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, 'Helvetica Neue', Arial;
+      background: var(--bg); color: var(--fg);
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .app { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; }
+    aside {
+      border-right: 1px solid var(--border);
+      padding: 24px 16px; position: sticky; top: 0; height: 100vh;
+    }
+    .brand { font-weight: 700; font-size: 20px; margin: 0 0 16px; }
+    nav a { display: block; padding: 8px 10px; border-radius: 10px; color: var(--fg); }
+    nav a.active { background: rgba(14,165,233,.12); }
+    nav a + a { margin-top: 6px; }
+
+    main { padding: 32px 22px; }
+    .section { display: none; max-width: 860px; }
+    .section.active { display: block; }
+    h1 { font-size: 32px; margin: 0 0 12px; }
+    h2 { font-size: 22px; margin: 28px 0 8px; }
+    p { margin: 10px 0; color: var(--fg); }
+    .muted { color: var(--muted); }
+    .card { border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+
+    /* Markdown 渲染样式（极简） */
+    .markdown-body h1 { font-size: 28px; margin: 0.6em 0; }
+    .markdown-body h2 { font-size: 22px; margin: 0.8em 0 0.4em; }
+    .markdown-body h3 { font-size: 18px; margin: 0.8em 0 0.4em; }
+    .markdown-body p { margin: 0.5em 0; }
+    .markdown-body ul, .markdown-body ol { padding-left: 1.2em; }
+    .markdown-body code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: 0.9em; background: rgba(148,163,184,.18); padding: .1em .35em; border-radius: .35em; }
+    .markdown-body pre { overflow: auto; padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: rgba(148,163,184,.12); }
+    .markdown-body pre code { background: transparent; padding: 0; }
+    .markdown-body img { max-width: 100%; border-radius: 10px; }
+
+    /* Mobile */
+    @media (max-width: 840px) {
+      .app { grid-template-columns: 1fr; }
+      aside { position: static; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
+    }
+    footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
+  </style>
+  <!-- Markdown 解析：使用 marked（CDN） -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside>
+      <h1 class="brand">我的极简网站</h1>
+      <nav id="nav">
+        <a href="#/" data-route="home" class="active">首页</a>
+        <a href="#/blog" data-route="blog">博客</a>
+        <a href="#/notes" data-route="notes">笔记</a>
+        <a href="#/about" data-route="about">关于</a>
+        <a href="#/links" data-route="links">链接</a>
+      </nav>
+      <footer>© <span id="year"></span> · 由 GitHub Pages 驱动</footer>
+    </aside>
+
+    <main>
+      <section id="home" class="section active">
+        <h1>欢迎 👋</h1>
+        <p class="muted">这是一个用 <strong>GitHub Pages</strong> 搭建的单文件极简网站，支持直接读取仓库里的 <code>.md</code> 文章。</p>
+        <div class="card">
+          <p>把你的 Markdown 放在 <code>posts/</code> 目录，例如 <code>posts/hello-world.md</code>。</p>
+          <p>在 <code>posts/posts.json</code> 中登记文章的 <code>slug</code>、标题和日期，前端会自动渲染列表与详情。</p>
+        </div>
+      </section>
+
+      <section id="blog" class="section">
+        <h1>博客</h1>
+        <div id="postList" class="card"><p class="muted">正在加载文章列表…</p></div>
+      </section>
+
+      <section id="post" class="section">
+        <article id="postArticle" class="markdown-body"></article>
+        <p style="margin-top:24px"><a href="#/blog">← 返回博客列表</a></p>
+      </section>
+
+      <section id="notes" class="section">
+        <h1>笔记</h1>
+        <p>在这里记录你的想法、清单或草稿。</p>
+        <ul>
+          <li>待办：整理主页内容</li>
+          <li>计划：把博客文章搬过来</li>
+          <li>想法：做一个「置顶」板块</li>
+        </ul>
+      </section>
+
+      <section id="about" class="section">
+        <h1>关于</h1>
+        <p>一句话介绍自己或网站定位。比如：这是我的数字花园/知识库/随笔。</p>
+      </section>
+
+      <section id="links" class="section">
+        <h1>链接</h1>
+        <ul>
+          <li><a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a></li>
+          <li><a href="https://pages.github.com/" target="_blank" rel="noreferrer">GitHub Pages</a></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    // 文章索引文件路径（JSON）：位于仓库 posts/posts.json
+    const POSTS_INDEX_PATH = 'posts/posts.json';
+    // 用于缓存索引，key 为 slug
+    let postsIndex = {};
+
+    const sections = Array.from(document.querySelectorAll('.section'));
+    const navLinks = Array.from(document.querySelectorAll('#nav a'));
+
+    function setActive(route) {
+      sections.forEach(s => s.classList.toggle('active', s.id === route));
+      navLinks.forEach(a => a.classList.toggle('active', a.dataset.route === route));
+      if (route === 'home') document.title = '我的极简网站';
+    }
+
+    async function loadPostsList() {
+      const listEl = document.getElementById('postList');
+      try {
+        const res = await fetch(POSTS_INDEX_PATH, {cache: 'no-store'});
+        if (!res.ok) throw new Error('posts.json 不存在或无法读取');
+        const arr = await res.json();
+        postsIndex = Object.fromEntries(arr.map(x => [x.slug, x]));
+        if (!arr.length) {
+          listEl.innerHTML = '<p class="muted">还没有文章。请在 <code>posts/</code> 目录添加 <code>.md</code> 并在 <code>posts/posts.json</code> 里登记。</p>';
+          return;
+        }
+        const items = arr
+          .sort((a,b)=> (b.date||'').localeCompare(a.date||''))
+          .map(({slug,title,date}) => {
+            return '<li><a href="#/post/'+slug+'">'+(title||slug)+'</a>' +
+              (date ? ' <span class="muted" style="font-size:14px">'+date+'</span>' : '') +
+              '</li>';
+          })
+          .join('');
+        listEl.innerHTML = '<ul>'+items+'</ul>';
+      } catch (e) {
+        listEl.innerHTML = '<p class="muted">无法加载文章列表：'+e.message+'<br>请创建 <code>posts/posts.json</code>（示例见主页说明）。</p>';
+      }
+    }
+
+    async function loadPost(slug) {
+      const article = document.getElementById('postArticle');
+      article.innerHTML = '<p class="muted">正在加载文章…</p>';
+      try {
+        const res = await fetch('posts/'+slug+'.md', {cache: 'no-store'});
+        if (!res.ok) throw new Error('找不到该 Markdown 文件');
+        const md = await res.text();
+        const html = marked.parse(md);
+        article.innerHTML = html;
+        const meta = postsIndex[slug];
+        if (meta && meta.title) document.title = meta.title + ' · 我的极简网站';
+        else document.title = slug + ' · 我的极简网站';
+        window.scrollTo({top:0, behavior:'instant'});
+      } catch (e) {
+        article.innerHTML = '<p class="muted">加载失败：'+e.message+'。请确认 <code>posts/'+slug+'.md</code> 是否存在。</p>';
+      }
+    }
+
+    function resolveRoute() {
+      const hash = location.hash.replace('#', ''); // like "/post/hello-world", "/blog" or "/"
+      let route = 'home';
+      if (hash && hash !== '/' && hash !== '') route = hash.replace('/', '');
+
+      // 动态路由：post/<slug>
+      if (route.startsWith('post/')) {
+        const slug = route.split('/')[1] || '';
+        setActive('post');
+        loadPost(slug);
+        return;
+      }
+
+      setActive(route);
+      if (route === 'blog') loadPostsList();
+    }
+
+    window.addEventListener('hashchange', resolveRoute);
+    resolveRoute();
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
